@@ -48,6 +48,7 @@ view: inventory_items {
   measure:  sum  {
     type: sum_distinct
     drill_fields: [inventory_items.product_id]
+    sql: ${order_items.sale_price} -  ${cost} ;;
   }
   measure: count {
     type: count
