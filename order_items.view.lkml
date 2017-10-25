@@ -39,8 +39,26 @@ view: order_items {
     value_format_name: usd_0
   }
 
+
+      measure: totalrevenue {
+        description: "careful now"
+        type: sum
+        sql: ${sale_price} ;;
+        required_fields: [currency]
+      }
+
+
+dimension: currency {
+  type: string
+}
+
   measure: count {
     type: count
     drill_fields: [id, inventory_items.id, orders.id]
+  }
+  measure: total_rev{
+    type: sum
+    sql: ${sale_price} ;;
+    value_format_name: usd_0
   }
 }
