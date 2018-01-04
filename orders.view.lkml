@@ -5,6 +5,23 @@ view: orders {
     type: date_time
   }
 
+  dimension: start {
+    type: date
+    sql: {% date_start date_filter %} ;;
+  }
+  dimension: end {
+    type: date
+    sql: {% date_end date_filter %};;
+  }
+  dimension: final {
+    type: string
+    sql: "from " ||${start} || " to " || ${end} ;;
+  }
+
+  filter: date_filter {
+    type: date
+  }
+
   dimension_group: filter_start_date {
     type: time
     timeframes: [raw]
