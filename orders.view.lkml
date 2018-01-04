@@ -17,6 +17,9 @@ view: orders {
     type: string
     sql: 'from ' ||${start} || ' to ' || ${end} ;;
   }
+  dimension: test {
+    type: string
+  }
 
   filter: date_filter {
     type: date
