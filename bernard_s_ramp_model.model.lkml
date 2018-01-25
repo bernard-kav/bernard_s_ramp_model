@@ -8,6 +8,7 @@ include: "*.dashboard"
 
 explore: events {
   join: users {
+     view_label: ""
     type: left_outer
     sql_on: ${events.user_id} = ${users.id} ;;
     relationship: many_to_one

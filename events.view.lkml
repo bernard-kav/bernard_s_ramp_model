@@ -20,6 +20,10 @@ view: events {
     ]
     sql: ${TABLE}.created_at ;;
   }
+  dimension: first_order_date{
+    type: date
+    sql: MIN(${created_date}) ;;
+  }
 
   dimension: type_id {
     type: number
@@ -41,4 +45,5 @@ view: events {
     type: count
     drill_fields: [id, users.last_name, users.first_name, users.id]
   }
+
 }

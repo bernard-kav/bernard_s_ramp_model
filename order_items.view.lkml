@@ -62,3 +62,31 @@ dimension: currency {
     value_format_name: usd_0
   }
 }
+
+# measure: count_opened_drilled {
+#   type: count_distinct
+#   sql_distinct_key: ${zendesk_tickets.ticket_id} ;;
+#   sql: ${ticket_id} ;;
+#   drill_fields: [ticket_id, zendesk_tickets.status, zendesk_tickets.created_date, zendesk_tickets.assignee, backup_list.installation_expire_date]
+#   filters: {
+#     field: action
+#     value: "opened"
+#   }
+#
+#   link: {
+#     label: "Detailed Analysis for \"{{backup_list.domain_name._value}}\""
+#     url: "https://docebo.looker.com/embed/dashboards/275?Domain={{backup_list.domain_name._value}}&Time%20frame={{ _filters['pdt_zendesk_opened_closed_tasks.action_date'] | url_encode }}"
+#   }
+#
+#   html: {{linked_value}} (Installation Expires on {{backup_list.installation_expire_date._value}}) ;;
+# }
+
+# measure: mrr_amount_usd {
+#   type: number
+#   sql: ${mrr_usd};;
+#   html: ${{rendered_value}} ;;
+#   value_format_name: decimal_2
+# }
+#
+#
+#

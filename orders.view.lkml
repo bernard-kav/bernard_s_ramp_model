@@ -103,5 +103,11 @@ view: orders {
   measure: count {
     type: count
     drill_fields: [id, users.last_name, users.first_name, users.id, order_items.count]
+
+  link: {
+    label: "Detailed Analysis for \"{{users.email._value}}\""
+    url: "https://docebo.looker.com/embed/dashboards/275?Domain={{users.email._value}}"
   }
+ }
+
 }
