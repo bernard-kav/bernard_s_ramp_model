@@ -37,6 +37,7 @@ view: users {
       date,
       week,
       month,
+      month_name,
       quarter,
       year
     ]
@@ -75,6 +76,15 @@ view: users {
     drill_fields: [detail*]
   }
 
+  measure: average_daily_users {
+    type: average
+    sql: ROUND(${created_date},0) ;;
+  }
+
+  measure: average_monthly_users {
+    type: average
+    sql: ${created_month} ;;
+  }
   # ----- Sets of fields for drilling ------
   set: detail {
     fields: [

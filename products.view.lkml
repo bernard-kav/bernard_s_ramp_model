@@ -11,6 +11,11 @@ view: products {
     type: string
     sql: ${TABLE}.brand ;;
   }
+  filter: brand_filter {
+    type: string
+    full_suggestions: yes
+    sql: {% condition brand_filter %} ${brand} {% endcondition %};;
+  }
 
   dimension: category {
     type: string
@@ -20,6 +25,12 @@ view: products {
   dimension: department {
     type: string
     sql: ${TABLE}.department ;;
+  }
+
+  dimension: forced_string {
+    label: "Transaction Deduped"
+    type: string
+    sql: "Transaction Deduped" ;;
   }
 
   dimension: item_name {

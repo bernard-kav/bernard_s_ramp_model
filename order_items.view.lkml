@@ -58,9 +58,10 @@ dimension: currency {
   }
   measure: total_rev{
     type: sum
-    sql: ${sale_price} ;;
+    sql: ${sale_price} - ${inventory_items.cost};;
     value_format_name: usd_0
   }
+
 }
 
 # measure: count_opened_drilled {

@@ -20,6 +20,9 @@ view: orders {
   dimension: test {
     type: string
   }
+  dimension: test1 {
+    type: string
+  }
 
   filter: date_filter {
     type: date
@@ -75,6 +78,9 @@ view: orders {
     timeframes: [
       raw,
       time,
+      time_of_day,
+      hour_of_day,
+      day_of_week_index,
       date,
       week,
       month,
@@ -83,6 +89,37 @@ view: orders {
       year
     ]
     sql: ${TABLE}.created_at ;;
+  }
+
+  dimension: day_of_week_short {
+    label: "day of week"
+    type: string
+    sql:
+      CASE
+        WHEN ${created_day_of_week_index} = 0 THEN 'Mon'
+        WHEN ${created_day_of_week_index} = 1 THEN 'Tue'
+        WHEN ${created_day_of_week_index} = 2 THEN 'Wed'
+        WHEN ${created_day_of_week_index} = 3 THEN 'Thu'
+        WHEN ${created_day_of_week_index} = 4 THEN 'Fri'
+        WHEN ${created_day_of_week_index} = 5 THEN 'Sat'
+        WHEN ${created_day_of_week_index} = 6 THEN 'Sun'
+        ELSE ''
+      END;;
+  }
+
+  dimension: date_day_concat {
+    type: string
+    sql: CONCAT(${created_date}, " ",${day_of_week_short}) ;;
+  }
+
+  measure: first_order {
+    type: date
+    sql: MIN(${created_date}) ;;
+  }
+
+  measure: last_order {
+    type: date
+    sql: MAX(${created_date}) ;;
   }
 
   dimension: created_formatted_date {
@@ -101,8 +138,14 @@ view: orders {
     sql: ${TABLE}.user_id ;;
   }
 
+  measure: my_measure {
+    type: number
+    sql: IFNULL(${count}, 0) ;;
+  }
+
   measure: count {
-    type: count
+    type: count_distinct
+    sql: ${id} ;;
     drill_fields: [id, users.last_name, users.first_name, users.id, order_items.count]
 
   link: {
@@ -110,5 +153,9 @@ view: orders {
     url: "https://docebo.looker.com/embed/dashboards/275?Domain={{users.email._value}}"
   }
  }
+measure: test_2 {
+  type: count_distinct
+  sql: ${user_id};;
+}
 
 }
