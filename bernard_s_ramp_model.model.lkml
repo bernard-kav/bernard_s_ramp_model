@@ -3,9 +3,6 @@ connection: "thelook"
 # include all the views
 include: "*.view"
 
-# include all the dashboards
-include: "*.dashboard"
-
 explore: events {
   join: users {
     view_label: "Events"
@@ -71,4 +68,19 @@ explore: user_data {
 
 explore: users {}
 
-explore: users_nn {}
+explore: order_purchase_affinity {
+  label: "Affinity"
+  view_label: "Affinity"
+
+  always_filter: {
+    filters: {
+      field: affinity_timeframe
+      value: "last 90 days"
+    }
+  }
+
+  join: total_orders {
+    type: cross
+    relationship: many_to_one
+  }
+}

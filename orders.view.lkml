@@ -1,3 +1,4 @@
+include: "order_items.view.lkml"
 view: orders {
   sql_table_name: demo_db.orders ;;
 
@@ -17,15 +18,18 @@ view: orders {
     type: string
     sql: 'from ' ||${start} || ' to ' || ${end} ;;
   }
-  dimension: test {
-    type: string
-  }
-  dimension: test1 {
-    type: string
-  }
 
   filter: date_filter {
     type: date
+  }
+  dimension: other_measure{
+    type: number
+    sql:  order_items.tot;;
+  }
+
+  dimension: string_to_percent_test{
+    type: string
+    sql: "0.2504" ;;
   }
 
   dimension_group: filter_start_date {
@@ -85,10 +89,16 @@ view: orders {
       week,
       month,
       month_name,
+      month_num,
       quarter,
       year
     ]
     sql: ${TABLE}.created_at ;;
+  }
+
+  dimension: until_today {
+    type: yesno
+    sql: ${created_day_of_week_index} <= WEEKDAY(NOW()) AND ${created_day_of_week_index} >= 0 ;;
   }
 
   dimension: day_of_week_short {
@@ -122,6 +132,11 @@ view: orders {
     sql: MAX(${created_date}) ;;
   }
 
+  measure: date_diff {
+    type: number
+    sql: datediff(${first_order}, ${last_order}) ;;
+  }
+
   dimension: created_formatted_date {
     group_label: "created"
     sql: ${TABLE}.created_at ;; # whatever formatting here in SQL
@@ -149,8 +164,8 @@ view: orders {
     drill_fields: [id, users.last_name, users.first_name, users.id, order_items.count]
 
   link: {
-    label: "Detailed Analysis for \"{{users.email._value}}\""
-    url: "https://docebo.looker.com/embed/dashboards/275?Domain={{users.email._value}}"
+    label: "Total Sale Price by Month for each Age Tier"
+    url: "{{link}}&pivots=users.age_tier"
   }
  }
 measure: test_2 {

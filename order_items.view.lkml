@@ -1,19 +1,24 @@
+include: "users.view.lkml"
+include: "orders.view.lkml"
 view: order_items {
   sql_table_name: demo_db.order_items ;;
 
   dimension: id {
+    group_label: "ID"
     primary_key: yes
     type: number
     sql: ${TABLE}.id ;;
   }
 
   dimension: inventory_item_id {
+    group_label: "ID"
     type: number
     # hidden: yes
     sql: ${TABLE}.inventory_item_id ;;
   }
 
   dimension: order_id {
+    group_label: "ID"
     type: number
     # hidden: yes
     sql: ${TABLE}.order_id ;;
@@ -61,6 +66,23 @@ dimension: currency {
     sql: ${sale_price} - ${inventory_items.cost};;
     value_format_name: usd_0
   }
+
+  measure: total_sale_price {
+    type: sum
+    sql: ${sale_price} ;;
+}
+
+  measure: order_count {
+    type: count_distinct
+    sql: ${order_id} ;;
+    drill_fields: [users.age_tier, total_sale_price, orders.created_at_month]
+
+    link: {
+      label: "Total Sale Price by Month for each Age Tier"
+      url: "{{link}}&pivots=users.age_tier"
+    }
+  }
+
 
 }
 
